@@ -725,7 +725,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 831302583}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8660271501745338093}
+        m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
+        m_MethodName: LoadScene
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &831302583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1690,6 +1702,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7efe376b5952eb44c9c60b952d106568, type: 3}
+--- !u!114 &8660271501745338093 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4649189555664298920, guid: 7efe376b5952eb44c9c60b952d106568, type: 3}
+  m_PrefabInstance: {fileID: 8660271501745338092}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be1b1a04062001945bdf5cd9954e330f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

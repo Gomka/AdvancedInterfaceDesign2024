@@ -5,17 +5,17 @@ using UnityEngine;
 public class Program : ScriptableObject
 {
     public string programName = "Program name";
-    public Section[] classSections;
+    public Section[] sections;
     public int totalDuration;
 
-    public Program(string programName, Section[] classSections, int totalDuration)
+    public Program(string programName, Section[] sections, int totalDuration)
     {
         this.programName = programName;
-        this.classSections = classSections;
+        this.sections = sections;
 
         totalDuration = 0;
 
-        foreach (Section sec in classSections)
+        foreach (Section sec in sections)
         {
             totalDuration += sec.duration;
         }
