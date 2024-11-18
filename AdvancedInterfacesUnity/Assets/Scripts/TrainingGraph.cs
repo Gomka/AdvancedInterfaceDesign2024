@@ -15,7 +15,7 @@ public class TrainingGraph : MonoBehaviour
         ShowGraph();
     }
 
-    private void CreateCircle(Vector2 anchoredPosition)
+    private GameObject CreateCircle(Vector2 anchoredPosition)
     {
         GameObject gameObject = new GameObject("circle", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
@@ -26,21 +26,58 @@ public class TrainingGraph : MonoBehaviour
         rectTransform.sizeDelta = new Vector2(sphereSize, sphereSize);
         rectTransform.anchorMin = Vector2.zero;
         rectTransform.anchorMax = Vector2.zero;
+
+        return gameObject;
     }
 
     private void ShowGraph()
     {
-        CreateCircle(new Vector2(0, 0));
-
         int currDuration = 0;
         float target = 0;
+
+        GameObject lastCircle = CreateCircle(new Vector2(0, 0));
 
         foreach (Section section in trainingProgram.sections) 
         {
             currDuration += section.duration;
             target = (float) currDuration / (float) trainingProgram.totalDuration;
 
-            CreateCircle(new Vector2(target * graphContainer.rect.width, section.bpm * 2));
+            GameObject circleGO = CreateCircle(new Vector2(target * graphContainer.rect.width, section.bpm * 2));
+
+            if (lastCircle != null) 
+            {
+                CreateDotConnection(lastCircle.GetComponent<RectTransform>().anchoredPosition, circleGO.GetComponent<RectTransform>().anchoredPosition);
+            }
+
+            lastCircle = circleGO;
         }
     }
+
+    private void CreateDotConnection(Vector2 dotPostitionA, Vector2 dotPositionB)
+    {
+        GameObject gameObject = new GameObject("dotConnection", typeof(Image));
+        gameObject.transform.SetParent(graphContainer, false);
+        gameObject.GetComponent<Image>().color = new Color(1, 1, 1, .5f);
+        RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
+
+        Vector2 dir = (dotPositionB - dotPostitionA).normalized;
+        float distance = Vector2.Distance(dotPostitionA, dotPositionB);
+        rectTransform.anchorMin = new Vector2(0, 0);
+        rectTransform.anchorMax = new Vector2(0, 0);
+        rectTransform.sizeDelta = new Vector2(distance, 3f);
+        rectTransform.anchoredPosition = dotPostitionA + dir * distance * .5f;
+
+        rectTransform.localEulerAngles = new Vector3(0, 0, GetAngleFromVectorFloat(dir));
+
+    }
+
+    public static float GetAngleFromVectorFloat(Vector3 dir)
+    {
+        dir = dir.normalized;
+        float n = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        if (n < 0) n += 360;
+
+        return n;
+    }
+
 }
