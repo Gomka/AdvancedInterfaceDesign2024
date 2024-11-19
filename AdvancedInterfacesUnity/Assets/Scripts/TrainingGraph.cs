@@ -9,6 +9,7 @@ public class TrainingGraph : MonoBehaviour
     [SerializeField] private Sprite circleSprite;
     [SerializeField] private int sphereSize = 20;
     [SerializeField] private Program trainingProgram;
+    private int graphPadding = 30;
 
     private void Awake()
     {
@@ -19,6 +20,7 @@ public class TrainingGraph : MonoBehaviour
         ShowGraph();
 
         // get a song 
+        // Initialize song UI
         // Start training & song
     }
 
@@ -49,7 +51,7 @@ public class TrainingGraph : MonoBehaviour
             currDuration += section.duration;
             target = (float) currDuration / (float) trainingProgram.totalDuration;
 
-            GameObject circleGO = CreateCircle(new Vector2(target * (graphContainer.rect.width - trainingProgram.sections[0].duration), section.bpm * 3));
+            GameObject circleGO = CreateCircle(new Vector2(target * (graphContainer.rect.width - graphPadding), section.bpm * 3));
 
             if (lastCircle != null) 
             {
