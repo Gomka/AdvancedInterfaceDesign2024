@@ -12,7 +12,14 @@ public class TrainingGraph : MonoBehaviour
 
     private void Awake()
     {
+        // Get program
+        // DontDestroyOnLoad object que contenga program??
+        // Initialize UI with program info
+
         ShowGraph();
+
+        // get a song 
+        // Start training & song
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
