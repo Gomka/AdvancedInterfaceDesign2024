@@ -35,14 +35,14 @@ public class TrainingGraph : MonoBehaviour
         int currDuration = 0;
         float target = 0;
 
-        GameObject lastCircle = CreateCircle(new Vector2(0, 0));
+        GameObject lastCircle = null;
 
         foreach (Section section in trainingProgram.sections) 
         {
             currDuration += section.duration;
             target = (float) currDuration / (float) trainingProgram.totalDuration;
 
-            GameObject circleGO = CreateCircle(new Vector2(target * graphContainer.rect.width, section.bpm * 2));
+            GameObject circleGO = CreateCircle(new Vector2(target * (graphContainer.rect.width - trainingProgram.sections[0].duration), section.bpm * 3));
 
             if (lastCircle != null) 
             {
