@@ -10,7 +10,7 @@ public class StepCounter : MonoBehaviour
         {
             if (_instance == null)
             {
-                _instance = FindObjectOfType<StepCounter>();
+                _instance = FindFirstObjectByType<StepCounter>();
                 if (_instance == null)
                 {
                     GameObject container = new GameObject("StepCounter");

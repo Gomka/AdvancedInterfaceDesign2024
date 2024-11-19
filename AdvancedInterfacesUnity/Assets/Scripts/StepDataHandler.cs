@@ -11,7 +11,7 @@ public class StepDataHandler : MonoBehaviour
         {
             if (_instance == null)
             {
-                _instance = FindObjectOfType<StepDataHandler>();
+                _instance = FindFirstObjectByType<StepDataHandler>();
                 if (_instance == null)
                 {
                     GameObject container = new GameObject("StepDataHandler");
