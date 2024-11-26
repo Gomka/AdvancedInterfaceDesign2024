@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95a26be8bb4db684f8b7ea404ee6d43d, type: 3}
   m_Name: Sprint
   m_EditorClassIdentifier: 
-  bpm: 180
+  bpm: 220
   duration: 30

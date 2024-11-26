@@ -26,8 +26,8 @@ public class StepCounter : MonoBehaviour
     [Header("Configuration")]
     public StepCounterConfig config;
     [Header("Runtime Variables")]
-    [SerializeField] private float distanceWalked = 0f;
-    [SerializeField] private int stepCount = 0, stepsMinute = 0;
+    [SerializeField] public float distanceWalked = 0f;
+    [SerializeField] public int stepCount = 0, stepsMinute = 0;
     private Vector3 acceleration;
     private Vector3 prevAcceleration;
 

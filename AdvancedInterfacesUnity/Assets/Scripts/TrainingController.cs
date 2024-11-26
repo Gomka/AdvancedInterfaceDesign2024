@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static System.Collections.Specialized.BitVector32;
@@ -9,18 +10,35 @@ public class TrainingController : MonoBehaviour
     [SerializeField] private Sprite circleSprite;
     [SerializeField] private int sphereSize = 20;
     [SerializeField] private Program trainingProgram;
+    [SerializeField] private TMP_Text programName, spm, target, timer, distance;
+    private StepCounter stepCounter;
 
     private void Awake()
     {
+        stepCounter = StepCounter.Instance;
         // Get program
         // DontDestroyOnLoad object que contenga program??
         // Initialize UI with program info
-
+        
         ShowGraph();
-
+        programName.text = trainingProgram.name;
         // get a song 
         // Initialize song UI
         // Start training & song
+    }
+
+    private void Update()
+    {
+        UpdateTexts();
+        // update player circle in graph
+    }
+
+    private void UpdateTexts()
+    {
+        spm.text = "SPM: "+stepCounter.stepsMinute;
+        target.text = "Target: " + trainingProgram.sections[0].bpm;
+        timer.text = ((int)Time.realtimeSinceStartup) + "s";
+        distance.text = stepCounter.distanceWalked + "m";
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
