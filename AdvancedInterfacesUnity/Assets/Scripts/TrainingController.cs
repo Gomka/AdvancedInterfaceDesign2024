@@ -3,13 +3,12 @@ using UnityEngine.UI;
 using static System.Collections.Specialized.BitVector32;
 using static UnityEngine.GraphicsBuffer;
 
-public class TrainingGraph : MonoBehaviour
+public class TrainingController : MonoBehaviour
 {
     [SerializeField] private RectTransform graphContainer;
     [SerializeField] private Sprite circleSprite;
     [SerializeField] private int sphereSize = 20;
     [SerializeField] private Program trainingProgram;
-    private int graphPadding = 30;
 
     private void Awake()
     {
@@ -48,10 +47,19 @@ public class TrainingGraph : MonoBehaviour
 
         foreach (Section section in trainingProgram.sections) 
         {
+            GameObject circleGO = CreateCircle(new Vector2(target * (graphContainer.rect.width), section.bpm * 3));
+
+            if (lastCircle != null)
+            {
+                CreateDotConnection(lastCircle.GetComponent<RectTransform>().anchoredPosition, circleGO.GetComponent<RectTransform>().anchoredPosition);
+            }
+
+            lastCircle = circleGO;
+
             currDuration += section.duration;
             target = (float) currDuration / (float) trainingProgram.totalDuration;
 
-            GameObject circleGO = CreateCircle(new Vector2(target * (graphContainer.rect.width - graphPadding), section.bpm * 3));
+            circleGO = CreateCircle(new Vector2(target * (graphContainer.rect.width), section.bpm * 3));
 
             if (lastCircle != null) 
             {

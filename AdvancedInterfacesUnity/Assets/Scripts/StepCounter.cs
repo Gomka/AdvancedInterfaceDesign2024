@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class StepCounter : MonoBehaviour
@@ -25,9 +27,10 @@ public class StepCounter : MonoBehaviour
     public StepCounterConfig config;
     [Header("Runtime Variables")]
     [SerializeField] private float distanceWalked = 0f;
-    [SerializeField] private int stepCount = 0;
+    [SerializeField] private int stepCount = 0, stepsMinute = 0;
     private Vector3 acceleration;
     private Vector3 prevAcceleration;
+
     private void Start()
     {
         if (config == null)
@@ -38,6 +41,7 @@ public class StepCounter : MonoBehaviour
         prevAcceleration = Input.acceleration;
         StepDataHandler.Instance.CheckForNewDay();
     }
+
     private void Update()
     {
         if (config == null) return;
@@ -45,6 +49,8 @@ public class StepCounter : MonoBehaviour
         CalculateDistance();
         StepDataHandler.Instance.SaveDailySteps(stepCount);
     }
+
+
     private void DetectSteps()
     {
         acceleration = Input.acceleration;
@@ -53,13 +59,24 @@ public class StepCounter : MonoBehaviour
         {
             stepCount++;
             Debug.Log($"Step detected! Count: {stepCount}");
+
+            StartCoroutine(BPMCount());
         }
         prevAcceleration = acceleration;
     }
+
+    IEnumerator BPMCount()
+    {
+        stepsMinute++;
+        yield return new WaitForSeconds(60);
+        stepsMinute--;
+    }
+
     private void CalculateDistance()
     {
         distanceWalked = stepCount * config.stepLength;
     }
+
     public void CalibrateStepLength(float newStepLength)
     {
         if (newStepLength > 0)
@@ -72,14 +89,17 @@ public class StepCounter : MonoBehaviour
             Debug.LogWarning("Whoops! That's not a valid step length.");
         }
     }
+
     // Getter methods and data management
     public float GetDistanceWalked() => distanceWalked;
     public int GetStepCount() => stepCount;
+
     public void ResetStepData()
     {
         stepCount = 0;
         distanceWalked = 0f;
     }
+
     public void LoadStepData(int loadedStepCount)
     {
         stepCount = loadedStepCount;
