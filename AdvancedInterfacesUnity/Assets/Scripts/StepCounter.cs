@@ -50,7 +50,6 @@ public class StepCounter : MonoBehaviour
         StepDataHandler.Instance.SaveDailySteps(stepCount);
     }
 
-
     private void DetectSteps()
     {
         acceleration = Input.acceleration;
@@ -63,6 +62,11 @@ public class StepCounter : MonoBehaviour
             StartCoroutine(BPMCount());
         }
         prevAcceleration = acceleration;
+    }
+
+    public void DebugBPM()
+    {
+        StartCoroutine(BPMCount());
     }
 
     IEnumerator BPMCount()

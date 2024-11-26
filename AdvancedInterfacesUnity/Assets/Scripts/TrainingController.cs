@@ -18,7 +18,6 @@ public class TrainingController : MonoBehaviour
         stepCounter = StepCounter.Instance;
         // Get program
         // DontDestroyOnLoad object que contenga program??
-        // Initialize UI with program info
         
         ShowGraph();
         programName.text = trainingProgram.name;
@@ -37,7 +36,7 @@ public class TrainingController : MonoBehaviour
     {
         spm.text = "SPM: "+stepCounter.stepsMinute;
         target.text = "Target: " + trainingProgram.sections[0].bpm;
-        timer.text = ((int)Time.realtimeSinceStartup) + "s";
+        timer.text = ((int)Time.timeSinceLevelLoad) + "s";
         distance.text = stepCounter.distanceWalked + "m";
     }
 
