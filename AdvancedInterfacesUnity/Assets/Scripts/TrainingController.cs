@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static System.Collections.Specialized.BitVector32;
@@ -11,11 +12,14 @@ public class TrainingController : MonoBehaviour
     [SerializeField] private Sprite circleSprite;
     [SerializeField] private int sphereSize = 20;
     [SerializeField] private Program trainingProgram;
-    [SerializeField] private TMP_Text programName, spm, target, timer, distance;
+    [SerializeField] private TMP_Text programName, spm, target, timer, distance, songName;
     [SerializeField] private RectTransform playerCircle, progressLine;
     [SerializeField] private SceneController sceneController;
+    [SerializeField] private AudioSource musicPlayer;
+    [SerializeField] private AudioResource [] songs, intenseSongs;
     private StepCounter stepCounter;
     private int count = 0, targetSection = 0;
+    private bool musicPaused = true;
 
     private void Awake()
     {
@@ -24,10 +28,8 @@ public class TrainingController : MonoBehaviour
         // DontDestroyOnLoad object que contenga program??
         
         ShowGraph();
+        StartMusic();
         programName.text = trainingProgram.name;
-        // get a song 
-        // Initialize song UI
-        // Start training & song
     }
 
     private void Update()
@@ -37,8 +39,46 @@ public class TrainingController : MonoBehaviour
 
         if(Time.timeSinceLevelLoad > (float)trainingProgram.totalDuration)
         {
-            sceneController.LoadScene(0);
+            sceneController.LoadScene(0); // end training
         }
+    }
+
+    public void ToggleMusic()
+    {
+        if (musicPaused)
+        {
+            StartMusic();
+        }
+        else
+        {
+            StopMusic();
+        }
+    }
+
+
+    private void StopMusic()
+    {
+        musicPaused = true;
+        musicPlayer.Stop();
+    }
+
+    public void StartMusic()
+    {
+        if (stepCounter.stepsMinute > trainingProgram.sections[targetSection].bpm)
+        {
+            int rand = Random.Range(0, songs.Length);
+            musicPlayer.resource = songs[rand];
+            songName.text = songs[rand].name;
+            musicPlayer.Play();
+        }
+        else
+        {
+            int rand = Random.Range(0, intenseSongs.Length);
+            musicPlayer.resource = intenseSongs[rand];
+            songName.text = intenseSongs[rand].name;
+            musicPlayer.Play();
+        }
+        musicPaused = false;
     }
 
     private void UpdatePlayer()
