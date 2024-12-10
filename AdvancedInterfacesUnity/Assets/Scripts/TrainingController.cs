@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static System.Collections.Specialized.BitVector32;
 using static UnityEngine.GraphicsBuffer;
@@ -11,7 +12,10 @@ public class TrainingController : MonoBehaviour
     [SerializeField] private int sphereSize = 20;
     [SerializeField] private Program trainingProgram;
     [SerializeField] private TMP_Text programName, spm, target, timer, distance;
+    [SerializeField] private RectTransform playerCircle, progressLine;
+    [SerializeField] private SceneController sceneController;
     private StepCounter stepCounter;
+    private int count = 0, targetSection = 0;
 
     private void Awake()
     {
@@ -29,15 +33,52 @@ public class TrainingController : MonoBehaviour
     private void Update()
     {
         UpdateTexts();
-        // update player circle in graph
+        UpdatePlayer();
+
+        if(Time.timeSinceLevelLoad > (float)trainingProgram.totalDuration)
+        {
+            sceneController.LoadScene(0);
+        }
+    }
+
+    private void UpdatePlayer()
+    {
+        float xfloat = (Time.timeSinceLevelLoad / (float)trainingProgram.totalDuration) * graphContainer.rect.width;
+        float yfloat = stepCounter.stepsMinute * 3;
+
+        playerCircle.anchoredPosition = new Vector2 (xfloat, yfloat);
+        progressLine.anchoredPosition = new Vector2(xfloat, 0);
     }
 
     private void UpdateTexts()
     {
+        count = 0;
+        targetSection = 0;
+
         spm.text = "SPM: "+stepCounter.stepsMinute;
-        target.text = "Target: " + trainingProgram.sections[0].bpm;
+
+        foreach (Section section in trainingProgram.sections)
+        {
+            count += section.duration;
+            if(count > (int)Time.timeSinceLevelLoad)
+            {
+                break;
+            }
+            targetSection++;
+        }
+        target.text = "Target: " + trainingProgram.sections[targetSection].bpm;
+
         timer.text = ((int)Time.timeSinceLevelLoad) + "s";
         distance.text = stepCounter.distanceWalked + "m";
+
+        if (stepCounter.stepsMinute > trainingProgram.sections[targetSection].bpm)
+        {
+            spm.color = Color.yellow;
+        }
+        else
+        {
+            spm.color = Color.green;
+        }
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
